@@ -13,7 +13,7 @@
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "check:registry-structure": "node scripts/check-registry-structure.mjs",
-    "test:registry": "node --test tests",
+    "test:registry": "node --test tests/registry-structure.test.mjs",
     "ci:local": "npm run check:registry-structure && npm run test:registry && npm run registry:validate && npm run lint && npm run typecheck && npm run build",
     "registry:build": "shadcn registry validate && shadcn build",
     "registry:validate": "shadcn registry validate"

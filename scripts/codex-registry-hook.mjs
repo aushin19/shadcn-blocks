@@ -37,7 +37,7 @@ function runNode(args) {
 const checks = [runNode([path.join(projectRoot, "scripts", "check-registry-structure.mjs")])]
 
 if (hookEventName === "Stop") {
-  checks.push(runNode(["--test"]))
+  checks.push(runNode(["--test", path.join(projectRoot, "tests", "registry-structure.test.mjs")]))
 }
 
 const failures = checks.filter((check) => !check.ok)
