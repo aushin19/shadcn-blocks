@@ -15,6 +15,9 @@
 /.next/
 /out/
 
+# generated registry payloads
+/public/r/
+
 # production
 /build
 

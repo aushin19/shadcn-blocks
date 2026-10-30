@@ -4,12 +4,16 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "predev": "npm run registry:build",
     "dev": "next dev",
+    "prebuild": "npm run registry:build",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "registry:build": "shadcn registry validate && shadcn build",
+    "registry:validate": "shadcn registry validate"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
