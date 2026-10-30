@@ -1,0 +1,30 @@
+{
+  "description": "Keep shadcn registry source files in their required folders.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "^(apply_patch|Edit|Write)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/codex-registry-hook.mjs\"",
+            "timeout": 30,
+            "statusMessage": "Checking registry source folders"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/scripts/codex-registry-hook.mjs\"",
+            "timeout": 60,
+            "statusMessage": "Checking registry structure and tests"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -66,7 +66,7 @@ npx shadcn@latest add aushin19/shadcn-blocks/call-to-action#v1.0.0
 
 ## Add your own items
 
-1. Add UI primitives to `components/ui/` or blocks to `registry/blocks/`.
+1. Add UI primitive source files to `registry/ui/` and block implementation source files to `registry/blocks/`.
 2. Add an item to the root `registry.json`, listing every source file and npm
    dependency it needs.
 3. Use `registry:ui` for primitives and `registry:block` for blocks. Files inside
@@ -76,8 +76,10 @@ npx shadcn@latest add aushin19/shadcn-blocks/call-to-action#v1.0.0
    use its full GitHub item address, such as
    `aushin19/shadcn-blocks/button`. Alternatively, bundle shared source files,
    as `call-to-action` does.
-5. Run `npm run registry:build` after edits, including while the dev server is
-   running. It validates the manifest and regenerates `public/r/*.json`.
+5. Run `npm run check:registry-structure`, `npm run test:registry`, and
+   `npm run registry:build` after edits, including while the dev server is
+   running. The registry build validates the manifest and regenerates
+   `public/r/*.json`.
 6. Add a preview to `app/page.tsx` if desired. Catalog metadata is read directly
    from `registry.json`; previews are explicitly imported.
 
@@ -104,10 +106,30 @@ No API route, database, registry server, npm publishing, or GitHub Pages setup i
 required for CLI installs. The Next.js preview can be deployed separately if you
 want a browsable website.
 
-## Checks
+## Local CI and Codex hooks
+
+Run the same checks as GitHub Actions locally:
+
+```bash
+npm run ci:local
+```
+
+The registry structure checker ensures UI source stays under `registry/ui/`,
+block implementation source stays under `registry/blocks/`, and all source files
+are listed in `registry.json`. Unit tests cover valid paths, invalid paths,
+missing files, and unregistered source files. GitHub Actions runs
+`npm run ci:local` on pushes and pull requests.
+
+Project hooks in `.codex/hooks.json` check registry structure after file edits
+and run the structure tests before Codex ends a turn. Review and trust the hooks
+with `/hooks` before relying on them.
+
+## Other checks
 
 ```bash
 npm run registry:validate
+npm run check:registry-structure
+npm run test:registry
 npm run lint
 npm run typecheck
 npm run build

@@ -15,7 +15,7 @@
       ],
       "files": [
         {
-          "path": "components/ui/button.tsx",
+          "path": "registry/ui/button.tsx",
           "type": "registry:ui"
         }
       ]
@@ -36,7 +36,7 @@
           "type": "registry:component"
         },
         {
-          "path": "components/ui/button.tsx",
+          "path": "registry/ui/button.tsx",
           "type": "registry:ui"
         }
       ]
