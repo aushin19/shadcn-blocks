@@ -24,10 +24,16 @@ function isInsideRoot(filePath, sourceRoot) {
 
 export function validateRegistryStructure(
   registry,
-  { fileExists = () => true, sourceFiles = [], legacyUiSourceFiles = [] } = {}
+  {
+    fileExists = () => true,
+    sourceFiles = [],
+    legacyUiSourceFiles = [],
+    allowedConsumerUiSourceFiles = [],
+  } = {}
 ) {
   const errors = []
   const registeredSourceFiles = new Set()
+  const allowedConsumerUiSources = new Set(allowedConsumerUiSourceFiles)
 
   if (!registry || !Array.isArray(registry.items)) {
     return ["registry.json must contain an items array."]
@@ -110,7 +116,9 @@ export function validateRegistryStructure(
   }
 
   for (const sourceFile of legacyUiSourceFiles) {
-    errors.push(`${sourceFile}: move registry UI source files to ${UI_SOURCE_ROOT}/.`)
+    if (!allowedConsumerUiSources.has(sourceFile)) {
+      errors.push(`${sourceFile}: move registry UI source files to ${UI_SOURCE_ROOT}/.`)
+    }
   }
 
   return errors

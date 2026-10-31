@@ -1,15 +1,15 @@
 {
-  "description": "Keep shadcn registry source files in their required folders.",
+  "description": "Keep registry sources in place and enforce shadcn-only, token-based UI styling.",
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "^(apply_patch|Edit|Write)$",
+        "matcher": "^(apply_patch|Edit|Write|exec_command|functions\\.exec)$",
         "hooks": [
           {
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/scripts/codex-registry-hook.mjs\"",
             "timeout": 30,
-            "statusMessage": "Checking registry source folders"
+            "statusMessage": "Checking registry, shadcn lint, local tokens, and global CSS"
           }
         ]
       }
@@ -21,7 +21,7 @@
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/scripts/codex-registry-hook.mjs\"",
             "timeout": 60,
-            "statusMessage": "Checking registry structure and tests"
+            "statusMessage": "Checking registry and design system tests, shadcn lint, and CSS"
           }
         ]
       }

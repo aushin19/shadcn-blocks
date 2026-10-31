@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
+import { installedShadcnUiFiles } from "./shadcn-ui-files.mjs"
 import { validateRegistryStructure } from "./registry-structure.mjs"
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
@@ -42,10 +43,14 @@ const sourceFiles = [
   ...collectSourceFiles(path.join(projectRoot, "registry", "blocks")),
 ]
 const legacyUiSourceFiles = collectSourceFiles(path.join(projectRoot, "components", "ui"))
+const allowedConsumerUiSourceFiles = installedShadcnUiFiles.filter((filePath) =>
+  filePath.startsWith("components/ui/")
+)
 const errors = validateRegistryStructure(registry, {
   fileExists: (filePath) => existsSync(path.join(projectRoot, ...filePath.split("/"))),
   sourceFiles,
   legacyUiSourceFiles,
+  allowedConsumerUiSourceFiles,
 })
 
 if (errors.length > 0) {

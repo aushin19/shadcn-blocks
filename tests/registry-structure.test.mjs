@@ -80,6 +80,24 @@ test("rejects source files that are not registered", () => {
   assert.ok(errors.some((error) => error.includes("add this source file to the root registry.json")))
 })
 
+test("allows exact upstream shadcn files in the consumer UI folder", () => {
+  const errors = validateRegistryStructure(validRegistry(), {
+    legacyUiSourceFiles: ["components/ui/button.tsx"],
+    allowedConsumerUiSourceFiles: ["components/ui/button.tsx"],
+  })
+
+  assert.deepEqual(errors, [])
+})
+
+test("rejects unlisted UI source files in the consumer UI folder", () => {
+  const errors = validateRegistryStructure(validRegistry(), {
+    legacyUiSourceFiles: ["components/ui/custom.tsx"],
+    allowedConsumerUiSourceFiles: ["components/ui/button.tsx"],
+  })
+
+  assert.ok(errors.some((error) => error.includes("move registry UI source files to registry/ui/")))
+})
+
 test("rejects unsafe and non-normalized paths", () => {
   const registry = validRegistry()
   registry.items[0].files[0].path = "registry/ui/../blocks/button.tsx"
