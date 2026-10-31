@@ -151,11 +151,14 @@
     },
     {
       "name": "empty-state-1",
-      "type": "registry:block",
+      "type": "registry:base",
       "title": "Empty State 1",
       "description": "A records empty state with source and CSV actions plus quick guide links.",
       "dependencies": [
-        "lucide-react"
+        "class-variance-authority",
+        "cn",
+        "lucide-react",
+        "tw-animate-css"
       ],
       "registryDependencies": [
         "aushin19/shadcn-blocks/base",
@@ -282,11 +285,28 @@
           "sidebar-border": "oklch(1 0 0 / 10%)",
           "sidebar-ring": "oklch(0.556 0 0)"
         }
+      },
+      "config": {
+        "style": "base-nova",
+        "iconLibrary": "lucide",
+        "rsc": true,
+        "tsx": true,
+        "rtl": false,
+        "menuColor": "default-translucent",
+        "menuAccent": "subtle",
+        "tailwind": {
+          "baseColor": "neutral",
+          "cssVariables": true,
+          "prefix": ""
+        },
+        "registries": {
+          "@reui": "https://reui.io/r/{style}/{name}.json"
+        }
       }
     },
     {
       "name": "frame",
-      "type": "registry:ui",
+      "type": "registry:base",
       "title": "Frame",
       "description": "A frame composition built from the local shadcn Card primitives.",
       "registryDependencies": [
@@ -410,7 +430,30 @@
           "sidebar-border": "oklch(1 0 0 / 10%)",
           "sidebar-ring": "oklch(0.556 0 0)"
         }
-      }
+      },
+      "config": {
+        "style": "base-nova",
+        "iconLibrary": "lucide",
+        "rsc": true,
+        "tsx": true,
+        "rtl": false,
+        "menuColor": "default-translucent",
+        "menuAccent": "subtle",
+        "tailwind": {
+          "baseColor": "neutral",
+          "cssVariables": true,
+          "prefix": ""
+        },
+        "registries": {
+          "@reui": "https://reui.io/r/{style}/{name}.json"
+        }
+      },
+      "dependencies": [
+        "class-variance-authority",
+        "cn",
+        "lucide-react",
+        "tw-animate-css"
+      ]
     }
   ]
 }

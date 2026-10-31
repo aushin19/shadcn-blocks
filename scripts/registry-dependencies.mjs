@@ -122,7 +122,10 @@ export function findRegistryDependencyViolations(registry, policy, readSource = 
   }
 
   for (const item of registry.items) {
-    if (item.type !== "registry:ui" && item.type !== "registry:block") {
+    const isSharedBase = item.type === "registry:base" && item.name === "base"
+    const isBaseBundle = item.type === "registry:base" && item.name !== "base" && (item.files?.length ?? 0) > 0
+    const hasSource = item.type === "registry:ui" || item.type === "registry:block" || isBaseBundle
+    if (!hasSource || isSharedBase) {
       continue
     }
 
@@ -131,6 +134,12 @@ export function findRegistryDependencyViolations(registry, policy, readSource = 
     }
     if (baseItem && !isDeepStrictEqual(item.cssVars, baseItem.cssVars)) {
       errors.push(`${item.name}: copy the shared base cssVars exactly so a single add command applies the design system.`)
+    }
+    if (
+      isBaseBundle &&
+      Object.entries(policy.designSystem ?? {}).some(([key, expected]) => item.config?.[key] !== expected)
+    ) {
+      errors.push(`${item.name}: keep the shared registry:base configuration for a one-command install.`)
     }
 
     validateExternalDependencies(item, resolvedPolicy, errors)

@@ -51,6 +51,24 @@ test("accepts metadata-only base and font items", () => {
   assert.deepEqual(errors, [])
 })
 
+test("accepts a registry:base bundle with a component source file", () => {
+  const errors = validateRegistryStructure({
+    items: [
+      {
+        name: "empty-state-1",
+        type: "registry:base",
+        config: {},
+        files: [{ path: blockFile, type: "registry:component" }],
+      },
+    ],
+  }, {
+    fileExists: () => true,
+    sourceFiles: [blockFile],
+  })
+
+  assert.deepEqual(errors, [])
+})
+
 test("rejects duplicate registry item names", () => {
   const registry = validRegistry()
   registry.items[1].name = registry.items[0].name

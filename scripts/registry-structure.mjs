@@ -49,23 +49,25 @@ export function validateRegistryStructure(
       itemNames.add(item.name)
     }
 
-    if (item?.type === "registry:base" || item?.type === "registry:font") {
+    if (item?.type === "registry:font") {
       if (Array.isArray(item.files) && item.files.length > 0) {
-        errors.push(`${itemLabel}: base and font registry items must not contain source files.`)
+        errors.push(`${itemLabel}: registry:font items must not contain source files.`)
       }
-      if (item.type === "registry:base" && !item.config) {
-        errors.push(`${itemLabel}: a registry:base item must define its shadcn config.`)
-      }
-      if (
-        item.type === "registry:font" &&
-        (!item.font?.family || !item.font?.provider || !item.font?.import || !item.font?.variable)
-      ) {
+      if (!item.font?.family || !item.font?.provider || !item.font?.import || !item.font?.variable) {
         errors.push(`${itemLabel}: a registry:font item must define its font metadata.`)
       }
       continue
     }
 
-    if (item?.type !== "registry:ui" && item?.type !== "registry:block") {
+    if (item?.type === "registry:base" && !item.config) {
+      errors.push(`${itemLabel}: a registry:base item must define its shadcn config.`)
+    }
+
+    if (item?.type === "registry:base" && (!Array.isArray(item.files) || item.files.length === 0)) {
+      continue
+    }
+
+    if (item?.type !== "registry:base" && item?.type !== "registry:ui" && item?.type !== "registry:block") {
       errors.push(`${itemLabel}: only registry:base, registry:font, registry:ui, and registry:block items are allowed.`)
       continue
     }
@@ -89,7 +91,7 @@ export function validateRegistryStructure(
       const expectedRoot =
         file.type === "registry:ui"
           ? UI_SOURCE_ROOT
-          : file.type === "registry:component" && item.type === "registry:block"
+          : file.type === "registry:component" && ["registry:block", "registry:base"].includes(item.type)
             ? BLOCK_SOURCE_ROOT
             : null
 
