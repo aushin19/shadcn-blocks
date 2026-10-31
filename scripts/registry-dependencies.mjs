@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs"
+import { isDeepStrictEqual } from "node:util"
 import parser from "@typescript-eslint/parser"
 
 const frameworkPeerPackages = new Set(["react", "react-dom"])
@@ -127,6 +128,9 @@ export function findRegistryDependencyViolations(registry, policy, readSource = 
 
     if (!item.registryDependencies?.includes(resolvedPolicy.baseItem)) {
       errors.push(`${item.name}: include the shared design system dependency "${resolvedPolicy.baseItem}".`)
+    }
+    if (baseItem && !isDeepStrictEqual(item.cssVars, baseItem.cssVars)) {
+      errors.push(`${item.name}: copy the shared base cssVars exactly so a single add command applies the design system.`)
     }
 
     validateExternalDependencies(item, resolvedPolicy, errors)

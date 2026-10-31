@@ -20,12 +20,12 @@
 ## Shadcn and user-approved registry components
 
 - Build new compositions from shadcn components imported through `@/components/ui/...` by default.
-- Use a ReUI or another external registry component only when the user selects that specific item. Add its exact registry item to `registry-policy.json` and to the block's `registryDependencies` so CI can verify it.
+- Use a ReUI or another external registry component only when the user selects that specific item. Add its exact registry URL to `registry-policy.json` and to the block's `registryDependencies` so consumers do not need extra registry configuration and CI can verify it.
 - Keep external component code installed through the shadcn CLI and import it through the consumer's local UI alias. Do not import external component packages directly into a block.
 - Install missing primitives with the shadcn CLI and keep the project on `base-nova` and Base UI. Do not mix in Radix versions.
 - Utility and data imports are allowed when needed, but do not render their components as JSX. The configured `lucide-react` library is allowed for icon-only JSX; do not add other icon packages. Use semantic HTML only for document structure and shadcn or specifically approved registry components for visual controls and surfaces.
 - Declare every directly imported npm package in the registry item's `dependencies`. Declare every imported `@/components/ui/...` primitive in `registryDependencies`.
-- Every distributable UI item and block must include `aushin19/shadcn-blocks/base` for the shared design tokens and typography.
+- Every distributable UI item and block must include `aushin19/shadcn-blocks/base` and copy its `cssVars` exactly. The dependency provides shared setup and typography; item-level tokens ensure one `shadcn add` applies the full design system.
 
 
 
