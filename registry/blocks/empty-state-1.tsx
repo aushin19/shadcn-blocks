@@ -24,7 +24,6 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item"
-import { Skeleton } from "@/components/ui/skeleton"
 
 const dataImportEmptyStateTokens = {
   canvas: "flex min-h-svh w-full items-start justify-center bg-card/60 p-4 sm:p-8 md:p-12",
@@ -41,12 +40,12 @@ const dataImportEmptyStateTokens = {
   illustrationBackSecond:
     "absolute left-1/2 top-3 h-12 w-44 -translate-x-1/2 bg-card/50",
   illustrationFront:
-    "absolute left-1/2 top-6 z-10 flex h-18 w-52 -translate-x-1/2 justify-center bg-background p-0",
+    "absolute left-1/2 top-6 z-10 flex h-18 w-52 -translate-x-1/2 justify-center bg-card p-0",
   illustrationContent: "flex h-full items-center gap-3 p-4",
-  illustrationIcon: "size-8 shrink-0",
+  illustrationIcon: "size-8 shrink-0 bg-muted p-0",
   illustrationLines: "flex flex-col gap-2",
-  illustrationPrimaryLine: "h-2 w-24",
-  illustrationSecondaryLine: "h-2 w-16",
+  illustrationPrimaryLine: "h-2 w-24 bg-muted p-0",
+  illustrationSecondaryLine: "h-2 w-16 bg-muted p-0",
   actions: "max-w-none flex-row justify-center gap-2",
   primaryAction:
     "bg-foreground/90 px-3 text-background hover:bg-foreground/90",
@@ -84,10 +83,19 @@ export function EmptyState1() {
               />
               <Card className={dataImportEmptyStateTokens.illustrationFront}>
                 <CardContent className={dataImportEmptyStateTokens.illustrationContent}>
-                  <Skeleton className={dataImportEmptyStateTokens.illustrationIcon} />
+                  <ItemMedia
+                    aria-hidden="true"
+                    className={dataImportEmptyStateTokens.illustrationIcon}
+                  />
                   <div className={dataImportEmptyStateTokens.illustrationLines}>
-                    <Skeleton className={dataImportEmptyStateTokens.illustrationPrimaryLine} />
-                    <Skeleton className={dataImportEmptyStateTokens.illustrationSecondaryLine} />
+                    <Card
+                      aria-hidden="true"
+                      className={dataImportEmptyStateTokens.illustrationPrimaryLine}
+                    />
+                    <Card
+                      aria-hidden="true"
+                      className={dataImportEmptyStateTokens.illustrationSecondaryLine}
+                    />
                   </div>
                 </CardContent>
               </Card>

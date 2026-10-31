@@ -165,8 +165,7 @@
         "button",
         "card",
         "empty",
-        "item",
-        "skeleton"
+        "item"
       ],
       "files": [
         {
