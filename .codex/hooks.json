@@ -1,5 +1,5 @@
 {
-  "description": "Keep registry sources in place and enforce shadcn-only, token-based UI styling.",
+  "description": "Keep registry sources in place and enforce declared shadcn or user-approved UI dependencies with token-based styling.",
   "hooks": {
     "PostToolUse": [
       {
@@ -9,7 +9,7 @@
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/scripts/codex-registry-hook.mjs\"",
             "timeout": 30,
-            "statusMessage": "Checking registry, shadcn lint, local tokens, and global CSS"
+            "statusMessage": "Checking registry dependencies, shadcn lint, local tokens, and global CSS"
           }
         ]
       }
@@ -21,7 +21,7 @@
             "type": "command",
             "command": "node \"$(git rev-parse --show-toplevel)/scripts/codex-registry-hook.mjs\"",
             "timeout": 60,
-            "statusMessage": "Checking registry and design system tests, shadcn lint, and CSS"
+            "statusMessage": "Checking registry dependencies and design system tests, shadcn lint, and CSS"
           }
         ]
       }

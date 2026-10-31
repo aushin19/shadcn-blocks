@@ -53,7 +53,7 @@ const dataImportEmptyStateTokens = {
   secondaryAction:
     "border-border bg-foreground/5 pr-3 text-foreground hover:bg-foreground/10",
   guideList: "mx-auto w-full max-w-136 space-y-3",
-  guideLabel: "text-sm text-(color:--data-import-empty-state-copy)",
+  guideLabel: "text-sm text-(color:--empty-state-1-copy)",
   guideGrid: "grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2",
   guideItem: "min-w-0 border-border",
   guideMedia: "size-4 text-muted-foreground",
@@ -63,11 +63,11 @@ const dataImportEmptyStateTokens = {
   guideActions: "text-muted-foreground",
 } as const
 
-export function DataImportEmptyState() {
+export function EmptyState1() {
   return (
     <main
       className={dataImportEmptyStateTokens.canvas}
-      style={{ "--data-import-empty-state-copy": "var(--muted-foreground)" } as CSSProperties}
+      style={{ "--empty-state-1-copy": "var(--muted-foreground)" } as CSSProperties}
     >
       <section className={dataImportEmptyStateTokens.section}>
         <Empty className={dataImportEmptyStateTokens.empty}>

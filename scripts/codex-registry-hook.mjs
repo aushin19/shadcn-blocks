@@ -37,6 +37,7 @@ function runNode(name, args) {
 
 const checks = [
   runNode("Registry folder check", [path.join(projectRoot, "scripts", "check-registry-structure.mjs")]),
+  runNode("Registry dependency check", [path.join(projectRoot, "scripts", "check-registry-dependencies.mjs")]),
   runNode("Design system CSS check", [path.join(projectRoot, "scripts", "check-design-system-css.mjs")]),
   runNode("shadcn and local token lint", [path.join(projectRoot, "node_modules", "eslint", "bin", "eslint.js"), ".", "--max-warnings=0"]),
   runNode("Raw component stylesheet check", [path.join(projectRoot, "scripts", "check-raw-component-styles.mjs")]),
@@ -45,6 +46,7 @@ const checks = [
 if (hookEventName === "Stop") {
   checks.push(
     runNode("Registry structure tests", ["--test", path.join(projectRoot, "tests", "registry-structure.test.mjs")]),
+    runNode("Registry dependency tests", ["--test", path.join(projectRoot, "tests", "registry-dependencies.test.mjs")]),
     runNode("Design system CSS and local token tests", [
       "--test",
       path.join(projectRoot, "tests", "design-system-css.test.mjs"),
@@ -56,7 +58,7 @@ if (hookEventName === "Stop") {
 const failures = checks.filter((check) => !check.ok)
 
 if (failures.length > 0) {
-  const reason = `Project checks failed. Keep UI sources in registry/ui/ and block implementations in registry/blocks/. Use only local shadcn components and existing design tokens, then fix all CSS and lint findings.\n${failures.map((failure) => `${failure.name} failed:\n${failure.output}`).join("\n\n")}`
+  const reason = `Project checks failed. Keep UI sources in registry/ui/ and block implementations in registry/blocks/. Declare every UI registry dependency and npm package, use only shadcn or user-approved registry items, then fix all CSS and lint findings.\n${failures.map((failure) => `${failure.name} failed:\n${failure.output}`).join("\n\n")}`
 
   if (hookEventName === "Stop") {
     process.stdout.write(JSON.stringify({ decision: "block", reason }))

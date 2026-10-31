@@ -17,28 +17,30 @@
 - In the root `registry.json`, use `registry:ui` files from `registry/ui/`. Use `registry:component` files from `registry/blocks/` for block implementations. A block may include shared `registry:ui` files from `registry/ui/`.
 - Run `npm run check:registry-structure` and `npm run test:registry` after changing registry items. Run `npm run ci:local` before publishing changes.
 
-## Shadcn-only component foundation
+## Shadcn and user-approved registry components
 
-- Build new UI compositions and blocks only from the project's shadcn components, imported through `@/components/ui/...`.
-- Do not use ReUI or components from any other UI library. Do not import Base UI, Radix, or another component toolkit directly into a new composition.
+- Build new compositions from shadcn components imported through `@/components/ui/...` by default.
+- Use a ReUI or another external registry component only when the user selects that specific item. Add its exact registry item to `registry-policy.json` and to the block's `registryDependencies` so CI can verify it.
+- Keep external component code installed through the shadcn CLI and import it through the consumer's local UI alias. Do not import external component packages directly into a block.
 - Install missing primitives with the shadcn CLI and keep the project on `base-nova` and Base UI. Do not mix in Radix versions.
-- Utility and data imports are allowed when needed, but do not render their components as JSX. The configured `lucide-react` library is allowed for icon-only JSX; do not add other icon packages. Use semantic HTML only for document structure and shadcn components for visual controls and surfaces.
-- Do not add ReUI or other third-party UI sources to `registry/ui/` or `registry/blocks/`.
+- Utility and data imports are allowed when needed, but do not render their components as JSX. The configured `lucide-react` library is allowed for icon-only JSX; do not add other icon packages. Use semantic HTML only for document structure and shadcn or specifically approved registry components for visual controls and surfaces.
+- Declare every directly imported npm package in the registry item's `dependencies`. Declare every imported `@/components/ui/...` primitive in `registryDependencies`.
+- Every distributable UI item and block must include `aushin19/shadcn-blocks/base` for the shared design tokens and typography.
 
 
 
 ## Raw component architecture
 
-- Build custom UI compositions and blocks only from the local shadcn components in `@/components/ui/`. Keep imports on consumer-facing aliases such as `@/components/ui/button`.
+- Build custom UI compositions and blocks from local shadcn components and user-approved registry components installed into the local UI folder. Keep imports on consumer-facing aliases such as `@/components/ui/button`, and declare the matching registry item.
 - Use static Tailwind classes inside component JSX for layout, spacing, the existing typography scale, and semantic colors backed by `app/globals.css` tokens.
-- If a component needs a local design-token alias, define it in that component's TSX `style` object with the filename prefix and map it directly to an existing global token, for example `"--data-import-empty-state-copy": "var(--muted-foreground)"`. Use the local alias only in a static Tailwind utility class.
+- If a component needs a local design-token alias, define it in that component's TSX `style` object with the filename prefix and map it directly to an existing global token, for example `"--empty-state-1-copy": "var(--muted-foreground)"`. Use the local alias only in a static Tailwind utility class.
 - Do not use raw palette colors, arbitrary values, dynamic class strings, visual variant props, `<style>` elements, CSS imports, or component-specific CSS declarations. The only allowed inline style is a static local-token alias object validated by `rawComponents/local-token-aliases`. Do not pass props spreads from a custom component or block.
 - Do not add other icon packages, decorative media, SVG layers, or presentation-only wrappers to custom components or blocks. Use only `*Icon` exports from the configured `lucide-react` library when an icon is needed.
 - Keep `app/globals.css` limited to Tailwind/shadcn imports, the existing `@theme inline` token map, existing `:root` and `.dark` tokens, and approved token-based base typography rules. Do not add component token names or selectors there. New local aliases belong in their dedicated TSX file and must point to an existing global token.
 - `shadcn/no-restyle` allows only layout, spacing, typography, and semantic token colors. Other shadcn lint rules reject arbitrary values, raw colors, unknown classes, and dynamic class strings. A narrow exception allows typed Tailwind classes that reference a validated local token alias.
 - The existing primitive source files listed in `eslint.config.mjs` are upstream foundations. Keep their source appearance intact. New composition files in `registry/ui/` are linted with the same raw rules as blocks.
 - Add an exact-file lint exception for another primitive only when its source is copied unchanged from the official shadcn registry. Never exempt a directory or a custom composition.
-- Run `npm run lint` after changing UI or block source. Run `npm run check:design-system-css` and `npm run test:design-system` when changing design tokens or style rules. GitHub CI runs these checks; the Codex PostToolUse hook runs registry checks, shadcn lint, local-token validation, and the global CSS check after matching coding tool calls. The Stop hook adds registry and design-system tests. Do not disable lint rules to silence a finding.
+- Run `npm run lint` after changing UI or block source. Run `npm run check:design-system-css` and `npm run test:design-system` when changing design tokens or style rules. GitHub CI and the Codex PostToolUse hook check registry dependencies, registry structure, shadcn lint, local-token aliases, and global CSS. The Stop hook also runs registry and design-system tests. Do not disable lint rules to silence a finding.
 
 
 

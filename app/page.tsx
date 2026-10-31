@@ -1,5 +1,5 @@
-import { DataImportEmptyState } from "@/registry/blocks/data-import-empty-state"
+import { EmptyState1 } from "@/registry/blocks/empty-state-1"
 
 export default function Page() {
-  return <DataImportEmptyState />
+  return <EmptyState1 />
 }

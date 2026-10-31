@@ -1,58 +1,57 @@
 # shadcn-blocks
 
-A GitHub hosted shadcn/ui registry built with Next.js, Base UI, and Tailwind CSS v4. Registry items are listed in `registry.json`, and the shadcn CLI fetches their source from this repository.
+A GitHub-hosted shadcn registry for reusable UI components and blocks. Source lives in `registry/ui/` and `registry/blocks/`; the shadcn CLI reads the root `registry.json` and installs each item's declared dependencies.
 
-## Run locally
+## Install a block
 
-```bash
-npm ci
-npm run dev
-```
-
-Open <http://localhost:3000> to preview the data import empty state. Registry JSON is generated before `npm run dev` and `npm run build`.
-
-| Endpoint | Purpose |
-| --- | --- |
-| `/r/registry.json` | Generated catalog |
-| `/r/data-import-empty-state.json` | Records empty state block |
-| `/r/frame.json` | Card based frame composition |
-
-## Install a registry item
-
-Run these commands in a separate project initialized with shadcn/ui and Tailwind CSS v4:
+Initialize shadcn once in a new consumer project:
 
 ```bash
-npx shadcn@latest list aushin19/shadcn-blocks
-npx shadcn@latest view aushin19/shadcn-blocks/data-import-empty-state
-npx shadcn@latest add aushin19/shadcn-blocks/data-import-empty-state
-npx shadcn@latest add aushin19/shadcn-blocks/frame
+npx shadcn@latest init
 ```
 
-The block uses the consumer's local shadcn `button`, `card`, `empty`, and `skeleton` components.
+Then install a block and its shared design system, primitives, npm packages, and fonts with one command:
+
+```bash
+npx shadcn@latest add aushin19/shadcn-blocks/empty-state-1
+```
+
+The registry base keeps projects on `base-nova` and Base UI. It supplies the shared semantic color and radius tokens, Figtree and Geist Mono fonts, Lucide icons, and the `cn` utility. Each block adds its own shadcn primitives and direct npm packages. Existing project aliases and the configured Tailwind CSS path remain consumer-controlled.
 
 ```tsx
-import { DataImportEmptyState } from "@/components/data-import-empty-state"
+import { EmptyState1 } from "@/components/empty-state-1"
 
 export default function Page() {
-  return <DataImportEmptyState />
+  return <EmptyState1 />
 }
 ```
 
-## Add registry items
+## Registry items
 
-1. Put distributable UI component source in `registry/ui/` and block source in `registry/blocks/`.
-2. Register every source file in the root `registry.json`. Use `registry:ui` for UI items and `registry:component` for block implementation files.
-3. Build new compositions only from local shadcn components imported through `@/components/ui/...`. `lucide-react` is allowed for icon-only JSX; do not render components from other UI libraries.
-4. Use existing Tailwind theme tokens for color and typography. Keep static utility classes in the TSX source. Do not add component CSS or stylesheets.
-5. Run `npm run check:registry-structure`, `npm run test:registry`, `npm run test:design-system`, `npm run check:design-system-css`, `npm run lint`, and `npm run registry:build` after changes.
+| Item | Type | Purpose |
+| --- | --- | --- |
+| `base` | `registry:base` | Shared base, tokens, fonts, and icon setup |
+| `empty-state-1` | `registry:block` | Records empty state with actions and quick guides |
+| `frame` | `registry:ui` | Card-based frame composition |
 
-## Design and styling rules
+GitHub Registry items can include source code, design tokens, dependencies, fonts, rules, and configuration. This repo uses the native GitHub registry form, so no registry server or generated JSON needs to be published. See the [shadcn GitHub Registry docs](https://ui.shadcn.com/docs/registry/github).
 
-Components and blocks use the existing design tokens from `app/globals.css` through semantic Tailwind classes. Keep `app/globals.css` limited to the existing token map and approved base typography rules. Do not add component selectors or component-specific colors, fonts, or typography there.
+## Add a block or component
 
-Keep component-specific styling in static utility classes in the component TSX file. When needed, define a local token alias in that file's `style` object and point it directly to an existing `global.css` token. Do not use raw colors, other arbitrary values, dynamic class strings, `<style>` tags, additional icon packages, decorative media, or presentation-only wrappers. Use only `*Icon` exports from the configured `lucide-react` library for icons. Do not pass visual override props or prop spreads from a custom composition.
+1. Put block source in `registry/blocks/` and distributable UI source in `registry/ui/`.
+2. Add the item to `registry.json`. Every block and UI item must depend on `aushin19/shadcn-blocks/base`.
+3. List every imported shadcn primitive in `registryDependencies` and every directly imported npm package in `dependencies`.
+4. Use shadcn components by default. Use a ReUI or other external registry component only after the user selects that exact item. Add it to both the item's `registryDependencies` and `registry-policy.json`.
+5. Keep component layout and local design-token aliases in the TSX file. Use semantic tokens from the shared base; do not add component CSS or component-specific global tokens.
+6. Run `npm run ci:local` and install the item into a clean shadcn consumer before publishing.
 
-`npm run lint` runs `@shadcn/lint` and repository rules that require local shadcn components, constrain utility classes, and reject CSS files outside `app/globals.css`. The design system CSS check rejects component rules or unapproved declarations in the global stylesheet.
+## Design rules
+
+Use local shadcn imports through `@/components/ui/...`. External registry items must be requested, listed explicitly, and consumed through the installed local UI alias. Do not import UI components directly from npm packages.
+
+Use static Tailwind utilities and semantic design tokens. If a component needs a local token alias, define it in the component's own TSX `style` object and map it directly to an existing shared token. Do not use raw colors, dynamic classes, `<style>` elements, component stylesheets, decorative media, or presentation-only wrappers. Use `lucide-react` for icons.
+
+`npm run lint` runs `@shadcn/lint` and repository rules for imports, tokens, styling, and presentation wrappers. `npm run check:registry-dependencies` checks that UI imports and npm packages are declared and external registry items are approved. `npm run check:design-system-css` limits the demo app's `app/globals.css` to shared tokens and approved base typography.
 
 ## CI and Codex hooks
 
@@ -62,18 +61,8 @@ Run the same checks as GitHub Actions locally:
 npm run ci:local
 ```
 
-CI runs registry structure checks and tests, design system CSS tests, shadcn lint, TypeScript, and a production build. GitHub Actions runs `npm run ci:local` on pushes and pull requests.
-
-The Codex PostToolUse hook runs registry checks, shadcn lint, local-token validation, and the global CSS check after matching coding tool calls. The Stop hook adds registry and design system tests.
+CI runs registry structure and dependency checks, tests, design-system CSS validation, shadcn lint, TypeScript, and a production build. The Codex PostToolUse hook runs fast registry, dependency, lint, and CSS checks. Its Stop hook also runs registry and design-system tests.
 
 ## Generated files
 
-Source files are authoritative. Generated `public/r/*.json` files are ignored by Git and recreated by `npm run registry:build`.
-
-## References
-
-- [Registry getting started](https://ui.shadcn.com/docs/registry/getting-started)
-- [Registry catalog schema](https://ui.shadcn.com/docs/registry/registry-json)
-- [Registry item schema](https://ui.shadcn.com/docs/registry/registry-item-json)
-- [GitHub registries](https://ui.shadcn.com/docs/registry/github)
-- [shadcn/ui Lint](https://github.com/shadcn-ui/lint)
+Source files are authoritative. Generated `public/r/*.json` files are ignored by Git and recreated by `npm run registry:build` for local previews and hosted registry endpoints.

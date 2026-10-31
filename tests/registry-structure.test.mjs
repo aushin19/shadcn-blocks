@@ -36,6 +36,30 @@ test("accepts UI and block sources in their required folders", () => {
   assert.deepEqual(errors, [])
 })
 
+test("accepts metadata-only base and font items", () => {
+  const errors = validateRegistryStructure({
+    items: [
+      { name: "base", type: "registry:base", config: {}, cssVars: { light: {} } },
+      {
+        name: "font",
+        type: "registry:font",
+        font: { family: "Example", provider: "google", import: "Example", variable: "--font-sans" },
+      },
+    ],
+  })
+
+  assert.deepEqual(errors, [])
+})
+
+test("rejects duplicate registry item names", () => {
+  const registry = validRegistry()
+  registry.items[1].name = registry.items[0].name
+
+  const errors = validateRegistryStructure(registry, { fileExists: () => true })
+
+  assert.ok(errors.some((error) => error.includes("registry item names must be unique")))
+})
+
 test("rejects UI item source outside registry/ui", () => {
   const registry = validRegistry()
   registry.items[0].files[0].path = "components/ui/button.tsx"

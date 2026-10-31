@@ -1,4 +1,4 @@
-# Design QA: Data Import Empty State
+# Design QA: Empty State 1
 
 ## Comparison setup
 
@@ -13,7 +13,7 @@
 ## Findings
 
 - [P2] The headline uses a different font family.
-  - Location: `DataImportEmptyState` title.
+  - Location: `EmptyState1` title.
   - Evidence: ReUI uses Inter at 24px, weight 600, 32px line height, and -0.6px letter spacing. The project token resolves to Figtree with the same size, weight, line height, and letter spacing. The source title is 301.64px wide; the implementation is 281.48px wide, a 20.16px difference.
   - Impact: The headline has a visibly narrower shape than the reference.
   - Fix: Change the existing global `font-sans` source to Inter if a project-wide font change is intended. The block keeps the current global token and adds no local font override.

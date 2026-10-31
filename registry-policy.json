@@ -1,0 +1,23 @@
+{
+  "selfRegistry": "aushin19/shadcn-blocks",
+  "baseItem": "aushin19/shadcn-blocks/base",
+  "approvedExternalItems": [],
+  "requiredBaseDependencies": [
+    "class-variance-authority",
+    "cn",
+    "lucide-react",
+    "tw-animate-css"
+  ],
+  "requiredBaseRegistryDependencies": [
+    "utils",
+    "@shadcn/font-figtree",
+    "@shadcn/font-geist-mono"
+  ],
+  "designSystem": {
+    "style": "base-nova",
+    "iconLibrary": "lucide"
+  },
+  "externalRegistries": {
+    "@reui": "https://reui.io/r/{style}/{name}.json"
+  }
+}
