@@ -74,8 +74,9 @@ function validateSourceImports(item, file, source, policy, errors) {
     }
 
     const moduleSource = declaration.source.value
-    const uiPrefix = "@/components/ui/"
-    if (moduleSource.startsWith(uiPrefix)) {
+    const uiPrefixes = ["@/components/ui/", "@/components/reui/", "@/registry/ui/"]
+    const uiPrefix = uiPrefixes.find((prefix) => moduleSource.startsWith(prefix))
+    if (uiPrefix) {
       const uiItemName = moduleSource.slice(uiPrefix.length).split("/").at(-1).replace(/\.[^.]+$/, "")
       if (!registryDependencies.some((reference) => registryItemName(reference) === uiItemName)) {
         errors.push(

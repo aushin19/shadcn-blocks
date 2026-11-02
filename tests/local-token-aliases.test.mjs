@@ -32,7 +32,7 @@ test("rejects references to unknown global tokens", () => {
   assert.match(
     getLocalTokenAliasViolation(
       "--empty-state-1-copy",
-      "var(--color-success)",
+      "var(--color-positive)",
       "empty-state-1"
     ),
     /not an existing global design token/

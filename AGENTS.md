@@ -1,3 +1,11 @@
+## Non-Negotiables
+- MUST use [no-ai-ui-slop](.agents\skills\no-ai-ui-slop\SKILL.md)
+- ALWAYS create a pixel perfect replica/clone of the component/block and always compare side by side to match it.
+- MUST use [REA](https://github.com/morluto/rea) and its skills and tools to create pixel perfect replica/clone.
+- MUST use `@chorme` or `@Browser` plugins for `Chrome Devtool Protocol`.
+- MUST use [frame md](https://reui.io/components/frame.md) and [frame docs](https://reui.io/components/frame) to get more context about ReUI Frame use.
+- LOOK for if the component is using/need `frame` components to be used.
+
 ## Responses
 
 - Be crisp: Get to the point. Avoid extra details.

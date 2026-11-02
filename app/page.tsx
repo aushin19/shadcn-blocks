@@ -1,5 +1,5 @@
-import { EmptyState1 } from "@/registry/blocks/empty-state-1"
+import { RegistryShowcase } from "./showcase"
 
 export default function Page() {
-  return <EmptyState1 />
+  return <RegistryShowcase />
 }

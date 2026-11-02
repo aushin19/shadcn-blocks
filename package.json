@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "predev": "npm run registry:build",
-    "dev": "next dev",
+    "dev": "node scripts/dev-with-showcase.mjs",
     "prebuild": "npm run registry:build",
     "build": "next build",
     "start": "next start",
@@ -19,7 +19,7 @@
     "test:registry": "node --test tests/registry-structure.test.mjs tests/registry-dependencies.test.mjs",
     "test:design-system": "node --test tests/design-system-css.test.mjs tests/local-token-aliases.test.mjs tests/raw-component-rules.test.mjs",
     "ci:local": "npm run check:registry-structure && npm run check:registry-dependencies && npm run test:registry && npm run test:design-system && npm run check:design-system-css && npm run registry:validate && npm run lint && npm run typecheck && npm run build",
-    "registry:build": "shadcn registry validate && shadcn build",
+    "registry:build": "node scripts/generate-showcase-manifest.mjs && shadcn registry validate && shadcn build",
     "registry:validate": "shadcn registry validate"
   },
   "dependencies": {

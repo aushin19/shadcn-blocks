@@ -63,6 +63,12 @@ test("requires a registry dependency for every local UI import", () => {
   assert.ok(errors.some((error) => error.includes("missing a matching registryDependencies entry")))
 })
 
+test("requires a registry dependency for every local ReUI import", () => {
+  const errors = check(registry(), `import { Frame } from "@/components/reui/frame"`)
+
+  assert.ok(errors.some((error) => error.includes("missing a matching registryDependencies entry")))
+})
+
 test("requires each directly imported npm package", () => {
   const errors = check(registry({ dependencies: [] }))
 

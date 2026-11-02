@@ -32,9 +32,8 @@ export default function Page() {
 | --- | --- | --- |
 | `base` | `registry:base` | Shared base, tokens, fonts, and icon setup |
 | `empty-state-1` | `registry:base` bundle | Records empty state, shared theme, fonts, primitives, and packages in one install |
-| `frame` | `registry:base` bundle | Card-based frame composition with the shared design system |
 
-The bundle's source keeps its distributable type: `empty-state-1` is a `registry:component` from `registry/blocks/`, and `frame` is a `registry:ui` source from `registry/ui/`. The root bundle type lets shadcn apply its design tokens during the same `add` command.
+The `empty-state-1` source is a `registry:component` from `registry/blocks/`. Its root bundle type lets shadcn apply its design tokens during the same `add` command.
 
 GitHub Registry items can include source code, design tokens, dependencies, fonts, rules, and configuration. This repo uses the native GitHub registry form, so no registry server or generated JSON needs to be published. See the [shadcn GitHub Registry docs](https://ui.shadcn.com/docs/registry/github).
 

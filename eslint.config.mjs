@@ -20,7 +20,7 @@ const eslintConfig = defineConfig([
     plugins: { shadcn, rawComponents },
     settings: {
       shadcn: {
-        ui: ["@/components/ui", "@/registry/ui"],
+        ui: ["@/components/ui", "@/registry/ui", "@/components/reui/frame"],
       },
     },
     rules: {

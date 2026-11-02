@@ -2,7 +2,6 @@ import type { ReactNode } from "react"
 
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -14,11 +13,27 @@ type FrameContentProps = {
 }
 
 function Frame({ children }: FrameContentProps) {
-  return <Card>{children}</Card>
+  return (
+    <Card className="min-h-40 w-full gap-0 bg-muted/50 p-1" data-slot="frame">
+      {children}
+    </Card>
+  )
+}
+
+function FrameGroup({ children }: FrameContentProps) {
+  return (
+    <Card className="w-full gap-0 bg-muted/50 p-1" data-slot="frame-group">
+      {children}
+    </Card>
+  )
 }
 
 function FramePanel({ children }: FrameContentProps) {
-  return <CardContent>{children}</CardContent>
+  return (
+    <Card className="w-full grow gap-0 bg-card/50 p-4" data-slot="frame-panel">
+      {children}
+    </Card>
+  )
 }
 
 function FrameHeader({ children }: FrameContentProps) {
@@ -39,6 +54,7 @@ function FrameFooter({ children }: FrameContentProps) {
 
 export {
   Frame,
+  FrameGroup,
   FramePanel,
   FrameHeader,
   FrameTitle,

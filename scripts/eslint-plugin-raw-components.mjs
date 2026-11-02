@@ -171,7 +171,11 @@ function getJsxPath(name) {
 }
 
 function isShadcnComponentImport(source) {
-  return /^@\/components\/ui(?:\/|$)/.test(source)
+  return (
+    /^@\/components\/ui(?:\/|$)/.test(source) ||
+    source === "@/components/reui/frame" ||
+    /^@\/registry\/ui(?:\/|$)/.test(source)
+  )
 }
 
 function isConfiguredIconImport(source, importedName) {

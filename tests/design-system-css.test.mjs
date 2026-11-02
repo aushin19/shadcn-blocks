@@ -24,9 +24,9 @@ test("rejects non-token declarations in theme blocks", () => {
   assert.ok(violations.some((violation) => violation.includes("@theme inline may contain design-token custom properties only")))
 })
 
-test("rejects new shared tokens in global CSS", () => {
+test("rejects unapproved shared tokens in global CSS", () => {
   const violations = findDesignSystemCssViolations(
-    currentGlobalStyles.replace("--background: oklch(1 0 0);", "--component-background: oklch(1 0 0);")
+    currentGlobalStyles.replace("--background: oklch(1 0 0);", "--status: oklch(1 0 0);")
   )
 
   assert.ok(violations.some((violation) => violation.includes("is not an existing global token")))

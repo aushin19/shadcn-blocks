@@ -57,3 +57,14 @@ test("rejects non-icon Lucide components in JSX", () => {
 
   assert(messages.some((message) => message.messageId === "componentImport"))
 })
+
+test("allows the registered local Frame component", () => {
+  const messages = lint(`
+    import { Frame } from "@/components/reui/frame"
+    export function Example() {
+      return <Frame />
+    }
+  `)
+
+  assert.deepEqual(messages, [])
+})
